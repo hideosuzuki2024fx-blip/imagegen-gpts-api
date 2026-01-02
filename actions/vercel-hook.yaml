@@ -1,0 +1,26 @@
+openapi: 3.1.1
+info:
+  title: NoteGen GitHub API
+  version: 1.0.1
+  description: API for NoteGenerator GPTs to list, read, and write GitHub articles via Vercel.
+servers:
+  - url: https://notegen-gpts-api.vercel.app
+paths:
+  /api/github/list:
+    get:
+      summary: List repository files
+      operationId: listRepoFiles
+      responses:
+        "200": { description: List of files }
+  /api/github/getRepositoryContents:
+    get:
+      summary: Get markdown content
+      operationId: getRepositoryContents
+      responses:
+        "200": { description: Markdown file content }
+  /api/github/createOrUpdateFile:
+    post:
+      summary: Create or update markdown file
+      operationId: createOrUpdateFile
+      responses:
+        "200": { description: File created or updated }
