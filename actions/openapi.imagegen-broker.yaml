@@ -1,0 +1,61 @@
+openapi: 3.1.0
+info:
+  title: Equivalence Dictionary Broker (ImageGen)
+  version: 1.0.0
+paths:
+  /hideosuzuki2024fx-blip/imagegen-gpts-api/main/data/equivalence_db.json:
+    servers:
+      - url: https://raw.githubusercontent.com
+    get:
+      operationId: getRawEquivalence
+      summary: Get the image equivalence dictionary (no auth)
+      responses:
+        "200":
+          description: Raw JSON file content
+          content:
+            application/json:
+              schema:
+                type: object
+  /v1/equivalence/update:
+    servers:
+      - url: https://imagegen-gpts-api.vercel.app
+    post:
+      operationId: brokerUpdateEquivalence
+      summary: Update mapping entry via broker
+      security:
+        - brokerApiKey: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [owner, repo, branch, path, entry]
+              properties:
+                owner: { type: string, example: hideosuzuki2024fx-blip }
+                repo: { type: string, example: imagegen-gpts-api }
+                branch: { type: string, example: main }
+                path: { type: string, example: data/equivalence_db.json }
+                entry:
+                  type: object
+                  required: [key, to]
+                  properties:
+                    key: { type: string }
+                    to: { type: string }
+                    weightDelta: { type: integer, default: 1 }
+                    notes: { type: string }
+                audit:
+                  type: object
+                  properties:
+                    by: { type: string, example: 綾瀬写真館 }
+                    reason: { type: string, example: success-mapping }
+                    sourcePrompt: { type: string }
+      responses:
+        "200":
+          description: Commit successful
+components:
+  securitySchemes:
+    brokerApiKey:
+      type: http
+      scheme: bearer
+      bearerFormat: token

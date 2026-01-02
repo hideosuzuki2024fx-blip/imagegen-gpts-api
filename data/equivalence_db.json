@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "updated_at": "1970-01-01T00:00:00Z",
+  "entries": [
+    {
+      "key": "low angle + short skirt + thigh emphasis",
+      "mappings": [
+        {
+          "to": "low angle, torso-centered composition, fashion editorial framing",
+          "weight": 1,
+          "notes": "decluster risky combo, preserve intent"
+        }
+      ]
+    }
+  ]
+}

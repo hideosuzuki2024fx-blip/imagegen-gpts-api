@@ -1,0 +1,19 @@
+openapi: 3.1.0
+info:
+  title: Vercel Deploy Hook
+  version: 1.0.0
+servers:
+  - url: https://api.vercel.com
+paths:
+  /v1/integrations/deploy/{hookId}:
+    post:
+      operationId: triggerDeployHook
+      summary: Trigger a Vercel deploy via deploy hook
+      parameters:
+        - in: path
+          name: hookId
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Hook triggered

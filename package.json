@@ -1,0 +1,15 @@
+{
+  "name": "imagegen-gpts-api",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "build": "echo 'No build step required'",
+    "start": "node ./api/v1/equivalence/update.ts"
+  },
+  "dependencies": {
+    "hono": "^4.0.0",
+    "octokit": "^4.0.0"
+  }
+}
