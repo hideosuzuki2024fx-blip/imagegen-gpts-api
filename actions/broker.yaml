@@ -1,0 +1,52 @@
+<#
+.SYNOPSIS
+  imagegen-gpts-api/actions 用 OpenAPI YAML群を生成して Git にコミットします。
+#>
+
+$repoRoot = "E:\ai_dev_core\imagegen-gpts-api"
+$actionsDir = Join-Path $repoRoot "actions"
+
+Write-Host "📂 リポジトリルート確認: $repoRoot"
+Set-Location $repoRoot
+git rev-parse --show-toplevel | Out-Null
+if ($LASTEXITCODE -ne 0) { Write-Error "❌ Git リポジトリではありません。"; exit 1 }
+
+if (-not (Test-Path $actionsDir)) { New-Item -ItemType Directory -Path $actionsDir | Out-Null }
+
+@'
+openapi: 3.1.0
+info:
+  title: NoteGenerator Commit API
+  version: 1.0.0
+servers:
+  - url: https://notegen-gpts-j8y1sxjzt-maogons-projects.vercel.app
+paths:
+  /articles:
+    post:
+      operationId: saveArticle
+      summary: Commit a Markdown article into GitHub
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SaveArticleRequest"
+      responses:
+        "200":
+          description: Saved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SaveArticleResponse"
+components:
+  schemas:
+    SaveArticleRequest:
+      type: object
+      required: [title, content]
+      properties:
+        title: { type: string, description: "Article title" }
+        content: { type: string, description: "Markdown content (UTF-8)" }
+  securitySchemes:
+    BearerAuth: { type: http, scheme: bearer }
