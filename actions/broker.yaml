@@ -1,36 +1,35 @@
 openapi: 3.1.0
 info:
-  title: NoteGenerator Commit API
+  title: Broker API
   version: 1.0.0
 servers:
-  - url: https://notegen-gpts-j8y1sxjzt-maogons-projects.vercel.app
+  - url: https://imagegen-gpts-api.vercel.app
 paths:
-  /articles:
+  /api/upsert:
     post:
-      operationId: saveArticle
-      summary: Commit a Markdown article into GitHub
-      security:
-        - BearerAuth: []
+      operationId: upsertEntry
+      summary: Upsert JSON entry to GitHub via Broker
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SaveArticleRequest"
+              type: object
+              required: [owner, repo, branch, path, entry, audit]
+              properties:
+                owner: { type: string }
+                repo: { type: string }
+                branch: { type: string }
+                path: { type: string }
+                entry: { type: object }
+                audit: { type: object }
       responses:
         "200":
-          description: Saved
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SaveArticleResponse"
+          description: Success
 components:
-  schemas:
-    SaveArticleRequest:
-      type: object
-      required: [title, content]
-      properties:
-        title: { type: string, description: "Article title" }
-        content: { type: string, description: "Markdown content (UTF-8)" }
   securitySchemes:
-    BearerAuth: { type: http, scheme: bearer }
+    brokerApiKey:
+      type: http
+      scheme: bearer
+security:
+  - brokerApiKey: []

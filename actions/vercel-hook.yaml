@@ -1,26 +1,19 @@
-openapi: 3.1.1
+openapi: 3.1.0
 info:
-  title: NoteGen GitHub API
-  version: 1.0.1
-  description: API for NoteGenerator GPTs to list, read, and write GitHub articles via Vercel.
+  title: Vercel Deploy Hook
+  version: 1.0.0
 servers:
-  - url: https://notegen-gpts-api.vercel.app
+  - url: https://api.vercel.com
 paths:
-  /api/github/list:
-    get:
-      summary: List repository files
-      operationId: listRepoFiles
-      responses:
-        "200": { description: List of files }
-  /api/github/getRepositoryContents:
-    get:
-      summary: Get markdown content
-      operationId: getRepositoryContents
-      responses:
-        "200": { description: Markdown file content }
-  /api/github/createOrUpdateFile:
+  /v1/integrations/deploy/{hookId}:
     post:
-      summary: Create or update markdown file
-      operationId: createOrUpdateFile
+      operationId: triggerDeploy
+      summary: Trigger Vercel deploy
+      parameters:
+        - name: hookId
+          in: path
+          required: true
+          schema: { type: string }
       responses:
-        "200": { description: File created or updated }
+        "200":
+          description: OK

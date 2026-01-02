@@ -1,18 +1,14 @@
 openapi: 3.1.0
 info:
-  title: GitHub Universal Note Action Suite (Strict-Valid)
-  version: v2.0.3
-  description: >
-    Unified GitHub REST API interface for Note Generator.
-    Supports reading, writing, listing, deleting files
-    and triggering GitHub Actions workflows (including note publish).
+  title: GitHub Contents API
+  version: 1.0.0
 servers:
   - url: https://api.github.com
 paths:
-  /repos/{owner}/{repo}:
+  /repos/{owner}/{repo}/contents/{path}:
     get:
-      summary: Retrieve repository information
-      operationId: getRepoInfo
+      operationId: getRepoFile
+      summary: Get file content
       parameters:
         - name: owner
           in: path
@@ -22,35 +18,39 @@ paths:
           in: path
           required: true
           schema: { type: string }
+        - name: path
+          in: path
+          required: true
+          schema: { type: string }
+        - name: ref
+          in: query
+          schema: { type: string }
       responses:
         "200":
-          description: Repository metadata
+          description: OK
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  full_name: { type: string }
-                  private: { type: boolean }
-                  default_branch: { type: string }
-                  description: { type: string }
-  /repos/{owner}/{repo}/contents/{path}:
-    get:
-      summary: Get repository contents
-      operationId: getRepositoryContents
-      parameters:
-        - { name: owner, in: path, required: true, schema: { type: string } }
-        - { name: repo, in: path, required: true, schema: { type: string } }
-        - { name: path, in: path, required: true, schema: { type: string } }
-      responses:
-        "200": { description: Contents retrieved }
+                  sha: { type: string }
+                  content: { type: string }
     put:
-      summary: Create or update a file
-      operationId: createOrUpdateFile
+      operationId: putRepoFile
+      summary: Create or update file
       parameters:
-        - { name: owner, in: path, required: true, schema: { type: string } }
-        - { name: repo, in: path, required: true, schema: { type: string } }
-        - { name: path, in: path, required: true, schema: { type: string } }
+        - name: owner
+          in: path
+          required: true
+          schema: { type: string }
+        - name: repo
+          in: path
+          required: true
+          schema: { type: string }
+        - name: path
+          in: path
+          required: true
+          schema: { type: string }
       requestBody:
         required: true
         content:
@@ -62,24 +62,15 @@ paths:
                 message: { type: string }
                 content: { type: string }
                 sha: { type: string }
+                branch: { type: string }
       responses:
-        "200": { description: File created or updated }
-    delete:
-      summary: Delete a file
-      operationId: deleteFile
-      parameters:
-        - { name: owner, in: path, required: true, schema: { type: string } }
-        - { name: repo, in: path, required: true, schema: { type: string } }
-        - { name: path, in: path, required: true, schema: { type: string } }
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required: [message, sha]
-              properties:
-                message: { type: string }
-                sha: { type: string }
-      responses:
-        "200": { description: File deleted }
+        "200":
+          description: Updated
+components:
+  securitySchemes:
+    githubToken:
+      type: http
+      scheme: bearer
+      bearerFormat: token
+security:
+  - githubToken: []
