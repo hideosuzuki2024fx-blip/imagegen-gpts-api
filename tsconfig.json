@@ -1,4 +1,3 @@
-@'
 {
   "compilerOptions": {
     "target": "ESNext",
@@ -12,4 +11,3 @@
   },
   "include": ["api/**/*"]
 }
-'@ | Set-Content -Encoding UTF8 tsconfig.json
