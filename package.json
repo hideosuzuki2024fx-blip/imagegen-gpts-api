@@ -3,13 +3,19 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "engines": { "node": ">=18" },
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "build": "echo 'No build step required'",
     "start": "node ./api/v1/equivalence/update.ts"
   },
   "dependencies": {
-    "hono": "^4.0.0",
-    "octokit": "^4.0.0"
+    "hono": "^4.11.3",
+    "octokit": "^4.1.4"
+  },
+  "devDependencies": {
+    "@types/node": "^25.0.3",
+    "typescript": "^5.9.3"
   }
 }
