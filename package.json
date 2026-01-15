@@ -7,8 +7,8 @@
     "node": ">=18"
   },
   "scripts": {
-    "build": "echo 'No build step required'",
-    "start": "node ./api/v1/equivalence/update.ts"
+    "build": "tsc",
+    "start": "node ./dist/api/hello.js"
   },
   "dependencies": {
     "hono": "^4.11.3",
